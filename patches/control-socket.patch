@@ -1,0 +1,58 @@
+Index: iw/recipe/pound/pound.cfg.tpl
+===================================================================
+--- iw/recipe/pound/pound.cfg.tpl	(révision 8679)
++++ iw/recipe/pound/pound.cfg.tpl	(copie de travail)
+@@ -32,6 +32,10 @@
+ # How long should Pound continue to answer existing connections after a receiving and INT or HUP signal
+ Grace $grace
+ 
++
++# Socket
++Control '$socket'
++
+ # listen, redirect and ... to:
+ #for $balancer in $balancers
+ # balancer for $balancer.name
+Index: iw/recipe/pound/config.py
+===================================================================
+--- iw/recipe/pound/config.py	(révision 8679)
++++ iw/recipe/pound/config.py	(copie de travail)
+@@ -92,6 +92,15 @@
+ 
+         tpl.owner = self.buildoptions.get('owner', utils.get_sysuser())
+         tpl.group = self.buildoptions.get('group', tpl.owner)
++        
++        tpl.socket = self.buildoptions.get(
++            'socket', 
++            os.path.join(
++                buildout['buildout']['directory'], 
++                'var', 
++                'pound.sock'
++            )
++        )
+ 
+ 
+ 
+Index: setup.py
+===================================================================
+--- setup.py	(révision 8679)
++++ setup.py	(copie de travail)
+@@ -21,7 +21,7 @@
+ import os
+ from setuptools import setup, find_packages
+ 
+-version = '0.5.0'
++version = '0.5.1'
+ 
+ README = os.path.join(os.path.dirname(__file__),
+               'iw',
+Index: CONTRIBUTORS.txt
+===================================================================
+--- CONTRIBUTORS.txt	(révision 8679)
++++ CONTRIBUTORS.txt	(copie de travail)
+@@ -1,4 +1,4 @@
+ Ingeniweb Internal sprint 2008
+ Tarek Ziade
+ Youenn Boussard
+-
++Mathieu PASQUET <kiorky@cryptelium.net>
