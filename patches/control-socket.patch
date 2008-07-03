@@ -8,7 +8,7 @@ Index: iw/recipe/pound/pound.cfg.tpl
  
 +
 +# Socket
-+Control '$socket'
++Control "$socket"
 +
  # listen, redirect and ... to:
  #for $balancer in $balancers
