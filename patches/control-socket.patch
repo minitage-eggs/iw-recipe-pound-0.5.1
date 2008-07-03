@@ -17,7 +17,15 @@ Index: iw/recipe/pound/config.py
 ===================================================================
 --- iw/recipe/pound/config.py	(révision 8679)
 +++ iw/recipe/pound/config.py	(copie de travail)
-@@ -92,6 +92,15 @@
+@@ -43,6 +43,7 @@
+ 
+     def __init__(self, buildout, name, options):
+         self.buildout = buildout
++        self.name = name
+         location = options.get(
+             'location', buildout['buildout']['parts-directory'])
+         options['location'] = os.path.join(location, name)
+@@ -92,6 +93,15 @@
  
          tpl.owner = self.buildoptions.get('owner', utils.get_sysuser())
          tpl.group = self.buildoptions.get('group', tpl.owner)
@@ -33,6 +41,23 @@ Index: iw/recipe/pound/config.py
  
  
  
+@@ -170,13 +180,15 @@
+ 
+         pid = os.path.join(var_dir, 'pound.pid')
+         scripts = []
++        
++        scripts_names = {'poundctl': self.name}
+         for x in ('poundctl', 'poundrun'):
+             ctl = Template(open(os.path.join(curdir, x+'.tpl')).read())
+             ctl.poundbin = self.options['executable']
+             ctl.poundcfg = filename
+             ctl.poundpid = pid
+             bin_dir = self.buildout['buildout']['bin-directory']
+-            script_name = os.path.join(bin_dir, x)
++            script_name = os.path.join(bin_dir, scripts_names.get(x, x))
+             f = open(script_name, 'w')
+             try:
+                 print >>f, ctl
 Index: setup.py
 ===================================================================
 --- setup.py	(révision 8679)
