@@ -25,7 +25,7 @@ Index: iw/recipe/pound/config.py
 +        tpl.socket = self.buildoptions.get(
 +            'socket', 
 +            os.path.join(
-+                buildout['buildout']['directory'], 
++                self.buildout['buildout']['directory'], 
 +                'var', 
 +                'pound.sock'
 +            )
